@@ -1,37 +1,5 @@
 let container = []
 
-// get data from local storage 
-if(JSON.parse(localStorage.getItem("data"))){
-    container.push(...JSON.parse(localStorage.getItem("data")))
-    console.log(JSON.parse(localStorage.getItem("data")).length);
-    for(let i =0 ; i<JSON.parse(localStorage.getItem("data")).length;i++){
-        let formsNumber = document.querySelector(".container__form");
-        console.log(JSON.parse(localStorage.getItem("data"))[i]);
-        let formReturnedData = `
-        <div class="container__form__item" data-id=${i}>
-            <span class="form_id">${i + 1}</span>
-            <input type="color" value=${JSON.parse(localStorage.getItem("data"))[i].color} class="colorBox" oninput = "changeColor(this,this.value)">
-            <input type="text" placeholder="Key" value=${JSON.parse(localStorage.getItem("data"))[i].key} oninput = "changeKey(this,this.value)">
-            <input type="text" placeholder="Enter text" value=${JSON.parse(localStorage.getItem("data"))[i].text} oninput = "changeText(this,this.value)">
-            <input type="number" min="1" max="100" value=${JSON.parse(localStorage.getItem("data"))[i].fontSize} oninput = "changingFontSize(this,this.value)">
-            <select id="input" class="fontFamilyBox" onchange="changingFontStyle(this,this.value);">
-                <option value="Times New Roman" selected="selected">Times New Roman</option>
-                <option value="Arial">Arial</option>
-                <option value="fantasy">Fantasy</option>
-                <option value="cursive">cursive</option>
-            </select>
-            <button class="delete_form" onclick = "deleteFormHandler(this)">Delete</button>
-        </div>
-        `
-        let pargraph = `
-        <p data-id=${i} class="par" onmousedown = "drag(this)" style="top:${JSON.parse(localStorage.getItem("data"))[i].x};left:${JSON.parse(localStorage.getItem("data"))[i].y};z-index:1000;font-size:${JSON.parse(localStorage.getItem("data"))[i].fontSize+"px"};font-family:${JSON.parse(localStorage.getItem("data"))[i].fontFamily}">${JSON.parse(localStorage.getItem("data"))[i].text}</p>
-        `;
-        formsNumber.innerHTML +=formReturnedData
-        document.querySelector(".container__texts").innerHTML += pargraph;
-    }
-}
-
-
 // add new form
 
 document.querySelector(".add_form").addEventListener("click", () => {
@@ -180,7 +148,6 @@ function _move_elem(e) {
     if (selected !== null) {
         selected.style.left = x_pos - x_elem + "px";
         selected.style.top = y_pos - y_elem + "px";
-        console.log(selected.style.left,selected.style.top);
         container[parseInt(target_element.getAttribute("data-id"))].y = selected.style.left
         container[parseInt(target_element.getAttribute("data-id"))].x = selected.style.top
     }
@@ -212,17 +179,13 @@ document.querySelector(".container__image").onmouseup = _destroy;
 document.querySelector(".getData__btn").addEventListener('click',()=>{
     for(let i =0 ; i < container.length;i++)
     {
-        console.log(container[i].key);
         if(container[i].key != null)
         {
             let myJsonString = JSON.stringify(container);
-            // store in localStorage
-            localStorage.setItem("data",myJsonString);
             console.log(myJsonString);
         }
         else {
             console.log("Key is required");
-            console.log(container);
         }
     }
     
